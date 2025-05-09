@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: yashmakhija/kanal-kamara-backend
+          ports:
+            - containerPort: 3091
+          env:
+            - name: PORT
+              value: "3091"
+            - name: NODE_ENV
+              value: "development"
+            - name: JWT_SECRET
+              value: "kunalKamraComedian"
+            - name: JWT_EXPIRES_IN
+              value: "7d"
+            - name: GOOGLE_CLIENT_ID
+              value: "463607080673-0f2f7jn6b29vihm1fh14fq1akdgeemt1.apps.googleusercontent.com"
+            - name: GOOGLE_CLIENT_SECRET
+              value: "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"
+            - name: TWILIO_ACCOUNT_SID
+              value: "ACce4a37fefb60a80ec1bfd48924ec4e35"
+            - name: TWILIO_AUTH_TOKEN
+              value: "e274eb22ee8ac2bdc4e61460819c075d"
+            - name: TWILIO_PHONE_NUMBER
+              value: "+12563716578"
+            - name: RAZORPAY_KEY_ID
+              value: "rzp_test_hZlsBrrU5YCptn"
+            - name: RAZORPAY_KEY_SECRET
+              value: "TGJpM2h6lptp4b9YWuoe8Dlq"
+            - name: RAZORPAY_WEBHOOK_SECRET
+              value: "webhook_secret_QJ02v3HiQSWXxlKzLdkrAy8F"
+            - name: REDIS_URL
+              value: "redis://redis-service:6379"
+            - name: REDIS_PASSWORD
+              value: ""
+            - name: REDIS_CLUSTER_ENABLED
+              value: "false"
+            - name: REDIS_CLUSTER_NODES
+              value: "redis-node-1:6379,redis-node-2:6379,redis-node-3:6379"
+            - name: REDIS_KEY_PREFIX
+              value: "bms:"
+            - name: REDIS_DEFAULT_TTL
+              value: "3600"
+            - name: CACHE_SHOW_TTL
+              value: "3600"
+            - name: CACHE_VENUE_TTL
+              value: "7200"
+            - name: CACHE_CATEGORY_TTL
+              value: "86400"
+            - name: CACHE_SEAT_TTL
+              value: "60"
+            - name: RATE_LIMIT_WINDOW_MS
+              value: "60000"
+            - name: RATE_LIMIT_MAX
+              value: "100"
+            - name: RATE_LIMIT_HEADERS
+              value: "true"
+            - name: LOG_LEVEL
+              value: "info"
+            - name: LOG_MAX_FILES
+              value: "14d"
+            - name: QUEUE_CONCURRENCY
+              value: "10"
+            - name: DATABASE_POOL_MAX
+              value: "25"
+            - name: DATABASE_IDLE_TIMEOUT
+              value: "30000"
+            - name: DATABASE_CONNECTION_TIMEOUT
+              value: "10000"
+            - name: DATABASE_QUERY_TIMEOUT
+              value: "30000"
+            - name: DEBUG_PRISMA
+              value: "false"
+            - name: DATABASE_URL
+              value: "postgresql://bmsuser:bmspassword@pg-service:5432/bmsuser?sslmode=disable"
+            - name: REDIS_URL
+              value: "redis://redis-service:6379"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: ClusterIP # Internal service, accessible only within the cluster
+  ports:
+    - port: 3091            # Port on which the service is exposed
+      targetPort: 3091      # Port on which the container is running
+  selector:
+    app: backend
+
+
