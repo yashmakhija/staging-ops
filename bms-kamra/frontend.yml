@@ -25,9 +25,9 @@ kind: Service
 metadata:
   name: bms-frontend-service
 spec:
-  type: LoadBalancer # Internal service, accessible only within the cluster
+  type: ClusterIP # Internal service, accessible only within the cluster
   ports:
-    - port: 3000            # Port on which the service is exposed
+    - port: 80            # Port on which the service is exposed
       targetPort: 3000      # Port on which the container is running
   selector:
     app: bms-frontend
