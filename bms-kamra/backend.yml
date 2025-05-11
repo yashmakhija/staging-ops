@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: yashmakhija/kanal-kamara-backend
+          image: shubhamxshah/bms-backend:latest
           ports:
             - containerPort: 3091
           env:

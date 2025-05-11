@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bms-admin
+  labels:
+    app: bms-admin
+spec:
+  replicas: 1 # Number of replicas you want
+  selector:
+    matchLabels:
+      app: bms-admin
+  template:
+    metadata:
+      labels:
+        app: bms-admin
+    spec:
+      containers:
+        - name: bms-admin
+          image: shubhamxshah/bms-admin:latest
+          ports:
+            - containerPort: 3001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bms-admin-service
+spec:
+  type: ClusterIP # Internal service, accessible only within the cluster
+  ports:
+    - port: 3001            # Port on which the service is exposed
+      targetPort: 3001      # Port on which the container is running
+  selector:
+    app: bms-admin
+
+
