@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: bms-cert
+  namespace: default
+spec:
+  secretName: bms-tls-prodd
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: ku.classicoder.com
+  dnsNames:
+  - ku.classicoder.com

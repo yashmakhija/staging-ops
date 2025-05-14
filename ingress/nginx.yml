@@ -4,6 +4,7 @@ metadata:
   name: web-apps-ingress
   namespace: default
   annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
@@ -14,7 +15,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: kamrav1.shubham.art 
+  - host: ku.classicoder.com 
     http:
       paths:
       - path: /backend(/|$)(.*)
@@ -40,40 +41,5 @@ spec:
               number: 80
   tls:
   - hosts: 
-    - kamrav1.shubham.art
-    secretName: abracadabra-v6
----
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: kubeissuer
-  namespace: default
-spec:
-  acme:
-  # The ACME server URL
-    server: https://acme-v02.api.letsencrypt.org/directory
-  # Email address used for ACME registration
-    email: shubhamxshah@gmail.com
-  # Name of a secret used to store the ACME account private key
-    privateKeySecretRef:
-      name: kubeissuer
-  # Enable the HTTP-01 challenge provider
-    solvers:
-    - http01:
-        ingress:
-          class: nginx          
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: kubecert
-  namespace: default
-spec:
-  secretName: abracadabra-v6
-  issuerRef:
-    name: kubeissuer
-    kind: ClusterIssuer
-  commonName: kamrav1.shubham.art
-  dnsNames:
-  - kamrav1.shubham.art
----
+    - ku.classicoder.com
+    secretName: kk-tls-staging

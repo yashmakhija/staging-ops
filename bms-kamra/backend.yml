@@ -16,114 +16,30 @@ spec:
     spec:
       containers:
         - name: backend
-          image: shubhamxshah/bms-backend:latest
+          image: shubhamxshah/bms-backend:latest 
+          imagePullPolicy: Always
           ports:
             - containerPort: 3091
-          env:
-            - name: PORT
-              value: "3091"
-            - name: NODE_ENV
-              value: "development"
-            - name: REDIS_PASSWORD
-              value: ""
-            - name: REDIS_CLUSTER_ENABLED
-              value: "false"
-            - name: REDIS_CLUSTER_NODES
-              value: "redis-node-1:6379,redis-node-2:6379,redis-node-3:6379"
-            - name: REDIS_KEY_PREFIX
-              value: "bms:"
-            - name: REDIS_DEFAULT_TTL
-              value: "3600"
-            - name: CACHE_SHOW_TTL
-              value: "3600"
-            - name: CACHE_VENUE_TTL
-              value: "7200"
-            - name: CACHE_CATEGORY_TTL
-              value: "86400"
-            - name: CACHE_SEAT_TTL
-              value: "60"
-            - name: RATE_LIMIT_WINDOW_MS
-              value: "60000"
-            - name: RATE_LIMIT_MAX
-              value: "100"
-            - name: RATE_LIMIT_HEADERS
-              value: "true"
-            - name: LOG_LEVEL
-              value: "info"
-            - name: LOG_MAX_FILES
-              value: "14d"
-            - name: QUEUE_CONCURRENCY
-              value: "10"
-            - name: DATABASE_POOL_MAX
-              value: "25"
-            - name: DATABASE_IDLE_TIMEOUT
-              value: "30000"
-            - name: DATABASE_CONNECTION_TIMEOUT
-              value: "10000"
-            - name: DATABASE_QUERY_TIMEOUT
-              value: "30000"
-            - name: DEBUG_PRISMA
-              value: "false"
-            - name: JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: JWT_SECRET
-            - name: JWT_EXPIRES_IN
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: JWT_EXPIRES_IN
-            - name: GOOGLE_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: GOOGLE_CLIENT_ID
-            - name: GOOGLE_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: GOOGLE_CLIENT_SECRET
-            - name: TWILIO_ACCOUNT_SID
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: TWILIO_ACCOUNT_SID
-            - name: TWILIO_AUTH_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: TWILIO_AUTH_TOKEN
-            - name: TWILIO_PHONE_NUMBER
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: TWILIO_PHONE_NUMBER
-            - name: RAZORPAY_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: RAZORPAY_KEY_ID
-            - name: RAZORPAY_KEY_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: RAZORPAY_KEY_SECRET
-            - name: RAZORPAY_WEBHOOK_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: RAZORPAY_WEBHOOK_SECRET
-            - name: DATABASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: DATABASE_URL
-            - name: REDIS_URL
-              valueFrom:
-                secretKeyRef:
-                  name: bms-secret
-                  key: REDIS_URL
+          volumeMounts: 
+            - name: secret 
+              mountPath: /app/apps/api/.env
+              subPath: .env 
+            - name: secret 
+              mountPath: /app/packages/database/.env 
+              subPath: .env 
+          env: 
+          - name: DATABASE_URL
+            valueFrom: 
+              secretKeyRef: 
+                name: bms-secret-3 
+                key: DATABASE_URL
+      volumes: 
+        - name: secret
+          secret: 
+            secretName: bms-secret-3
+            items: 
+              - key: .env 
+                path: .env 
 ---
 apiVersion: v1
 kind: Service
