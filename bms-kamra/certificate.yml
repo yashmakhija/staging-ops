@@ -4,10 +4,10 @@ metadata:
   name: bms-cert
   namespace: default
 spec:
-  secretName: bms-tls-prodd
+  secretName: bms-tls-prod
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: ku.classicoder.com
+  commonName: app.kunalkamra.in
   dnsNames:
-  - ku.classicoder.com
+  - app.kunalkamra.in
